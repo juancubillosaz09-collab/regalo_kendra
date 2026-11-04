@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>PARA MI PERSONA ESPECIAL</title>
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        /* Fondo con un degradado suave y lindo */
+        background: linear-gradient(135deg, #ff9af5 0%, #fecfef 99%, #fecfef 100%);
+        overflow: hidden;
+      }
+
+      /* Caja contenedora principal */
+      .container {
+        width: 320px;
+        text-align: center;
+        padding: 30px 20px;
+        background: rgba(255, 255, 255, 0.85); /* Blanco con transparencia */
+        backdrop-filter: blur(10px); /* Efecto cristal */
+        border-radius: 30px; /* Bordes bien redondeados */
+        box-shadow: 0 15px 35px rgba(240, 128, 160, 0.4); /* Sombra rosa suave */
+        border: 2px solid rgba(255, 255, 255, 0.6);
+      }
+
+      .container h2 {
+        font-size: 1.4rem;
+        color: #d6336c; /* Rosa oscuro elegante */
+        margin-bottom: 15px;
+        line-height: 1.3;
+      }
+
+      .container h2 span {
+        font-size: 1rem;
+        color: #8a5a6b;
+        font-weight: 400;
+        display: block;
+        margin-top: 5px;
+      }
+
+      /* Pantalla donde se muestran los puntitos */
+      .input-display {
+        text-align: center;
+        margin: 15px 0 25px 0;
+        font-size: 35px;
+        color: #d6336c;
+        letter-spacing: 5px;
+        background: #fff0f6; /* Fondo rosado muy claro */
+        padding: 10px;
+        border-radius: 15px;
+        border: 2px dashed #faa2c1; /* Borde punteado */
+        min-height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      /* Teclado numérico */
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .keypad button {
+        padding: 18px 0;
+        font-size: 22px;
+        font-weight: 500;
+        color: #861657;
+        background: linear-gradient(to bottom, #ffe0eb, #f8bbd0);
+        border: none; /* Quitamos el borde negro feo */
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px rgba(214, 51, 108, 0.15); /* Sombrita */
+      }
+
+      .keypad button:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 3px rgba(214, 51, 108, 0.2);
+      }
+
+      .keypad button:hover {
+        background: linear-gradient(to bottom, #f8bbd0, #f48fb1);
+        color: #fff;
+      }
+
+      /* Ajuste para el botón 0 */
+      .keypad button:last-child {
+        grid-column: 2/3;
+      }
+
+      /* Animación para cuando la contraseña es incorrecta */
+      @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        50% { transform: translateX(8px); }
+        75% { transform: translateX(-8px); }
+        100% { transform: translateX(0); }
+      }
+
+      .shake {
+        animation: shake 0.4s ease-in-out;
+        border-color: #ff4d4d !important;
+        color: #ff4d4d !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>
+        🔒<br />
+        Ingresa la contraseña
+        <span>(una fecha 🥰 )</span>
+      </h2>
+      
+      <div class="input-display" id="inputDisplay">••••••</div>
+
+      <div class="keypad">
+        <button class="key" onclick="enterDigit('1')">1</button>
+        <button class="key" onclick="enterDigit('2')">2</button>
+        <button class="key" onclick="enterDigit('3')">3</button>
+        <button class="key" onclick="enterDigit('4')">4</button>
+        <button class="key" onclick="enterDigit('5')">5</button>
+        <button class="key" onclick="enterDigit('6')">6</button>
+        <button class="key" onclick="enterDigit('7')">7</button>
+        <!-- Corregí el orden del 8 y el 9 para que sea natural -->
+        <button class="key" onclick="enterDigit('8')">8</button>
+        <button class="key" onclick="enterDigit('9')">9</button>
+        <button class="key" onclick="enterDigit('0')">0</button>
+      </div>
+    </div>
+
+    <script>
+      const correctPassword = "080526";
+      const display = document.getElementById("inputDisplay");
+      let input = "";
+
+      function enterDigit(digit) {
+        if (input.length < 6) {
+          input += digit;
+        }
+        display.textContent = input.padEnd(6, "•");
+        
+        if (input.length === 6) {
+          if (input === correctPassword) {
+            // Pequeño retraso para que se vea el último puntito antes de cambiar
+            setTimeout(() => {
+              window.location.href = "flower.html";
+            }, 300);
+          } else {
+            // Efecto de error lindo (sacudida y color rojo)
+            display.classList.add("shake");
+            setTimeout(() => {
+              alert("Contraseña incorrecta, intenta de nuevo 🥺");
+              input = "";
+              display.textContent = "••••••";
+              display.classList.remove("shake");
+            }, 400);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

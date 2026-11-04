@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Margaritas para ti</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Fondo rosado suave y mágico que combina con la contraseña */
+        --color-bg: radial-gradient(circle at 50% 100%, #fff0f6 0%, #f8bbd0 40%, #d6336c 100%);
+        --line-color: linear-gradient(to left top, #a8e6a8 20%, #2e6b3a, #144425);
+        /* Centro de la margarita: amarillo brillante */
+        --flower-center: radial-gradient(circle at 30% 30%, #fff176, #fbc02d, #f57f17);
+        --leaf-color: radial-gradient(circle at 30% 30%, #a8e6a8, #2e6b3a);
+        /* Pétalos blancos con un toque sutil de sombra en la base */
+        --petal-color: linear-gradient(to bottom, #ffffff, #fce4ec);
+      }
+
+      body {
+        background-image: var(--color-bg);
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Título centrado */
+      h1 {
+        position: absolute;
+        top: 20px;
+        text-align: center;
+        width: 100%;
+        color: #d6336c; /* Rosa oscuro para que resalte en el fondo claro */
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-size: 28px;
+        padding: 0 20px;
+        z-index: 10;
+        text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+      }
+
+      /* Contenedor de todas las flores */
+      .garden {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        padding: 0 20px;
+      }
+
+      .flower_wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: none;
+        transform-origin: bottom center;
+      }
+
+      /* Tamaños de las margaritas */
+      .flower_wrapper:nth-child(1) {
+        transform: scale(0.6) translateY(30px);
+        margin-bottom: 20px;
+      }
+      .flower_wrapper:nth-child(2) {
+        transform: scale(0.75) translateY(10px);
+        margin-bottom: 10px;
+      }
+      .flower_wrapper:nth-child(3) {
+        transform: scale(1.1);
+        margin-bottom: 0;
+      }
+      .flower_wrapper:nth-child(4) {
+        transform: scale(0.75) translateY(10px);
+        margin-bottom: 10px;
+      }
+      .flower_wrapper:nth-child(5) {
+        transform: scale(0.6) translateY(30px);
+        margin-bottom: 20px;
+      }
+
+      .flower_stem {
+        width: 10px;
+        height: 300px;
+        background-image: var(--line-color);
+        border-radius: 10px;
+        position: relative;
+      }
+
+      /* Centro de la margarita */
+      .flower_center {
+        position: absolute;
+        top: -45px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--flower-center);
+        z-index: 5;
+        box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2);
+        opacity: 0;
+        animation: open-flower-center 1s ease-out forwards;
+        animation-delay: 1s;
+      }
+
+      /* Pétalos de margarita */
+      .flower_petal {
+        position: absolute;
+        width: 35px;
+        height: 110px;
+        background: var(--petal-color);
+        border-radius: 50px;
+        top: -35%;
+        left: 50%;
+        transform-origin: center bottom;
+        opacity: 0;
+        box-shadow: inset 0 0 5px rgba(214, 51, 108, 0.1);
+        animation: open-flower-petal 1s ease-out forwards;
+      }
+
+      .flower_petal-1 { --rotate-deg: 0deg; animation-delay: 1.2s; }
+      .flower_petal-2 { --rotate-deg: 30deg; animation-delay: 1.25s; }
+      .flower_petal-3 { --rotate-deg: 60deg; animation-delay: 1.3s; }
+      .flower_petal-4 { --rotate-deg: 90deg; animation-delay: 1.35s; }
+      .flower_petal-5 { --rotate-deg: 120deg; animation-delay: 1.4s; }
+      .flower_petal-6 { --rotate-deg: 150deg; animation-delay: 1.45s; }
+      .flower_petal-7 { --rotate-deg: 180deg; animation-delay: 1.5s; }
+      .flower_petal-8 { --rotate-deg: 210deg; animation-delay: 1.55s; }
+      .flower_petal-9 { --rotate-deg: 240deg; animation-delay: 1.6s; }
+      .flower_petal-10 { --rotate-deg: 270deg; animation-delay: 1.65s; }
+      .flower_petal-11 { --rotate-deg: 300deg; animation-delay: 1.7s; }
+      .flower_petal-12 { --rotate-deg: 330deg; animation-delay: 1.75s; }
+
+      /* Hojas elegantes */
+      .flower_leaf {
+        position: absolute;
+        width: 35px;
+        height: 100px;
+        background: var(--leaf-color);
+        border-radius: 100px 0 100px 0; 
+        transform-origin: center bottom;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      }
+
+      .flower_leaf-1 {
+        left: 60%;
+        bottom: 120px;
+        transform: translateX(-45%) rotate(50deg);
+      }
+      .flower_leaf-2 {
+        left: 40%;
+        bottom: 170px;
+        transform: translateX(-55%) rotate(-50deg);
+      }
+
+      @keyframes open-flower-petal {
+        0% {
+          transform: translateX(-50%) translateY(50px) rotate(0deg);
+          opacity: 0;
+        }
+        50% { opacity: 1; }
+        100% {
+          transform: translateX(-50%) translateY(0) rotate(var(--rotate-deg));
+          opacity: 1;
+        }
+      }
+
+      @keyframes open-flower-center {
+        0% {
+          transform: translateX(-50%) scale(0);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(-50%) scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Luces de fondo */
+      .light {
+        position: absolute;
+        bottom: 0px;
+        width: 8px;
+        height: 8px;
+        background-color: #fff9c4; 
+        border-radius: 50%;
+        filter: blur(1px);
+        animation: light-ans-background 7s linear infinite backwards;
+        z-index: 1;
+      }
+
+      .light-1 { left: 100px; animation-delay: 1s; }
+      .light-2 { left: 200px; animation-delay: 0.5s; }
+      .light-3 { left: 600px; animation-delay: 0.3s; }
+      .light-4 { left: 800px; animation-delay: 0.9s; }
+      .light-5 { left: 450px; animation-delay: 1.5s; }
+      .light-6 { left: 100px; animation-delay: 3s; }
+      .light-7 { left: 900px; animation-delay: 2s; }
+      .light-8 { left: 600px; animation-delay: 3.5s; }
+      .light-9 { left: 700px; animation-delay: 2s; }
+      .light-10 { left: 950px; animation-delay: 3.5s; }
+      .light-11 { left: 750px; animation-delay: 3s; }
+      .light-12 { left: 850px; animation-delay: 0.5s; }
+
+      @keyframes light-ans-background {
+        0% { opacity: 0; transform: translateY(0) translateX(0); }
+        25% { opacity: 1; transform: translateY(-100px) translateX(10px); }
+        50% { transform: translateY(-200px) translateX(-10px); }
+        75% { transform: translateY(-400px) translateX(15px); }
+        100% { opacity: 0; transform: translateY(-600px) translateX(-5px); }
+      }
+
+      /* Botón a juego con la contraseña */
+      .flower-btn {
+        padding: 15px 30px;
+        font-size: 18px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        color: #d6336c;
+        background: linear-gradient(to bottom, #ffe0eb, #f48fb1);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 15px rgba(214, 51, 108, 0.3);
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 999;
+      }
+
+      .flower-btn:hover {
+        transform: translateX(-50%) translateY(-3px);
+        box-shadow: 0 12px 20px rgba(214, 51, 108, 0.5);
+        background: linear-gradient(to bottom, #f8bbd0, #f48fb1);
+        color: #fff;
+      }
+
+      /* Mensaje emergente CON SCROLL */
+      .message-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.7);
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh; /* Evita que se salga de la pantalla */
+        overflow-y: auto; /* Agrega la barra para subir y bajar */
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #f48fb1;
+        border-radius: 20px;
+        padding: 35px 25px 25px 25px; /* Un poco más de espacio arriba por la X */
+        text-align: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        box-shadow: 0 0 40px rgba(244, 143, 177, 0.4);
+        backdrop-filter: blur(5px);
+      }
+
+      /* Personalización de la barra de scroll (para que sea linda y rosa) */
+      .message-box::-webkit-scrollbar {
+        width: 8px;
+      }
+      .message-box::-webkit-scrollbar-track {
+        background: #fff0f6;
+        border-radius: 10px;
+        margin: 15px 0; /* Margen para que no toque los bordes redondeados */
+      }
+      .message-box::-webkit-scrollbar-thumb {
+        background: #f48fb1;
+        border-radius: 10px;
+      }
+      .message-box::-webkit-scrollbar-thumb:hover {
+        background: #d6336c;
+      }
+
+      .message-box.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+      }
+
+      .message-box p {
+        color: #8a5a6b;
+        font-family: "Poppins", sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: justify; /* Para que el texto largo se vea ordenado */
+        text-align-last: center; /* El último renglón centrado */
+      }
+
+      .message-box img {
+        width: 220px;
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px;
+        border: 3px solid #f48fb1;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      .message-box .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        color: #f48fb1;
+        font-size: 30px;
+        cursor: pointer;
+        font-weight: bold;
+        line-height: 1;
+        z-index: 10;
+      }
+
+      .message-box .close-btn:hover {
+        color: #d6336c;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        h1 { font-size: 18px; }
+        .flower_wrapper:nth-child(1),
+        .flower_wrapper:nth-child(5) { display: none; }
+        .flower_wrapper:nth-child(2),
+        .flower_wrapper:nth-child(4) { transform: scale(0.8); }
+        .message-box p { font-size: 15px; }
+        .message-box { max-height: 75vh; } /* Un poco más pequeño en celular */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Para mi persona favorita en todo el mundo 🌎</h1>
+
+    <!-- Jardín de margaritas -->
+    <div class="garden">
+      <!-- Margarita 1 -->
+      <div class="flower_wrapper">
+        <div class="flower_stem"></div>
+        <div class="flower_center"></div>
+        <div class="flower_petal flower_petal-1"></div>
+        <div class="flower_petal flower_petal-2"></div>
+        <div class="flower_petal flower_petal-3"></div>
+        <div class="flower_petal flower_petal-4"></div>
+        <div class="flower_petal flower_petal-5"></div>
+        <div class="flower_petal flower_petal-6"></div>
+        <div class="flower_petal flower_petal-7"></div>
+        <div class="flower_petal flower_petal-8"></div>
+        <div class="flower_petal flower_petal-9"></div>
+        <div class="flower_petal flower_petal-10"></div>
+        <div class="flower_petal flower_petal-11"></div>
+        <div class="flower_petal flower_petal-12"></div>
+        <div class="flower_leaf flower_leaf-1"></div>
+        <div class="flower_leaf flower_leaf-2"></div>
+      </div>
+
+      <!-- Margarita 2 -->
+      <div class="flower_wrapper">
+        <div class="flower_stem"></div>
+        <div class="flower_center"></div>
+        <div class="flower_petal flower_petal-1"></div>
+        <div class="flower_petal flower_petal-2"></div>
+        <div class="flower_petal flower_petal-3"></div>
+        <div class="flower_petal flower_petal-4"></div>
+        <div class="flower_petal flower_petal-5"></div>
+        <div class="flower_petal flower_petal-6"></div>
+        <div class="flower_petal flower_petal-7"></div>
+        <div class="flower_petal flower_petal-8"></div>
+        <div class="flower_petal flower_petal-9"></div>
+        <div class="flower_petal flower_petal-10"></div>
+        <div class="flower_petal flower_petal-11"></div>
+        <div class="flower_petal flower_petal-12"></div>
+        <div class="flower_leaf flower_leaf-1"></div>
+        <div class="flower_leaf flower_leaf-2"></div>
+      </div>
+
+      <!-- Margarita 3 (centro) -->
+      <div class="flower_wrapper">
+        <div class="flower_stem"></div>
+        <div class="flower_center"></div>
+        <div class="flower_petal flower_petal-1"></div>
+        <div class="flower_petal flower_petal-2"></div>
+        <div class="flower_petal flower_petal-3"></div>
+        <div class="flower_petal flower_petal-4"></div>
+        <div class="flower_petal flower_petal-5"></div>
+        <div class="flower_petal flower_petal-6"></div>
+        <div class="flower_petal flower_petal-7"></div>
+        <div class="flower_petal flower_petal-8"></div>
+        <div class="flower_petal flower_petal-9"></div>
+        <div class="flower_petal flower_petal-10"></div>
+        <div class="flower_petal flower_petal-11"></div>
+        <div class="flower_petal flower_petal-12"></div>
+        <div class="flower_leaf flower_leaf-1"></div>
+        <div class="flower_leaf flower_leaf-2"></div>
+      </div>
+
+      <!-- Margarita 4 -->
+      <div class="flower_wrapper">
+        <div class="flower_stem"></div>
+        <div class="flower_center"></div>
+        <div class="flower_petal flower_petal-1"></div>
+        <div class="flower_petal flower_petal-2"></div>
+        <div class="flower_petal flower_petal-3"></div>
+        <div class="flower_petal flower_petal-4"></div>
+        <div class="flower_petal flower_petal-5"></div>
+        <div class="flower_petal flower_petal-6"></div>
+        <div class="flower_petal flower_petal-7"></div>
+        <div class="flower_petal flower_petal-8"></div>
+        <div class="flower_petal flower_petal-9"></div>
+        <div class="flower_petal flower_petal-10"></div>
+        <div class="flower_petal flower_petal-11"></div>
+        <div class="flower_petal flower_petal-12"></div>
+        <div class="flower_leaf flower_leaf-1"></div>
+        <div class="flower_leaf flower_leaf-2"></div>
+      </div>
+
+      <!-- Margarita 5 -->
+      <div class="flower_wrapper">
+        <div class="flower_stem"></div>
+        <div class="flower_center"></div>
+        <div class="flower_petal flower_petal-1"></div>
+        <div class="flower_petal flower_petal-2"></div>
+        <div class="flower_petal flower_petal-3"></div>
+        <div class="flower_petal flower_petal-4"></div>
+        <div class="flower_petal flower_petal-5"></div>
+        <div class="flower_petal flower_petal-6"></div>
+        <div class="flower_petal flower_petal-7"></div>
+        <div class="flower_petal flower_petal-8"></div>
+        <div class="flower_petal flower_petal-9"></div>
+        <div class="flower_petal flower_petal-10"></div>
+        <div class="flower_petal flower_petal-11"></div>
+        <div class="flower_petal flower_petal-12"></div>
+        <div class="flower_leaf flower_leaf-1"></div>
+        <div class="flower_leaf flower_leaf-2"></div>
+      </div>
+    </div>
+
+    <!-- Luces de fondo -->
+    <div class="light light-1"></div>
+    <div class="light light-2"></div>
+    <div class="light light-3"></div>
+    <div class="light light-4"></div>
+    <div class="light light-5"></div>
+    <div class="light light-6"></div>
+    <div class="light light-7"></div>
+    <div class="light light-8"></div>
+    <div class="light light-9"></div>
+    <div class="light light-10"></div>
+    <div class="light light-11"></div>
+    <div class="light light-12"></div>
+
+    <button class="flower-btn" id="flowerBtn">CLICK AQUI</button>
+
+    <!-- Mensaje emergente -->
+    <div class="message-box" id="messageBox">
+      <button class="close-btn" id="closeBtn">&times;</button>
+      
+      <p>
+        Kendra hoy cumplimos un mes más desde que nuestras vidas se cruzaron
+        y de verdad no sabes lo feliz que me hace tenerte en mi vida 
+        estoy muy agradecido de haber conocido a una persona tan maravillosa como tú,
+        quiero que sepas que eres muy importante para mí y que a pesar de la distancia
+        mis sentimientos por ti son sinceros, me hace mucha ilusión pensar en todo lo que todavía nos queda por vivir y
+        en ese día en el que por fin podamos estar juntos y convertir tantos momentos que tu y yo imaginamos en una realidad, kendra
+        Espero seguir sumando muchos meses contigo y darte tantas razones como pueda para que sientas que te amo muchisimo❤️
+      </p>
+
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsuIkDdnRXsWno35Jm23cYg99jQl6dtO9AAhXOYMNS3A&s=10"
+        alt="Imagen especial"
+      />
+
+      <p>
+        un pequeño texto de tu talisman
+      </p>
+    </div>
+
+    <script>
+      const flowerBtn = document.getElementById("flowerBtn");
+      const messageBox = document.getElementById("messageBox");
+      const closeBtn = document.getElementById("closeBtn");
+
+      flowerBtn.onclick = () => {
+        messageBox.classList.add("show");
+        messageBox.scrollTop = 0; // Reinicia la barra al principio al abrir
+      };
+
+      closeBtn.onclick = () => {
+        messageBox.classList.remove("show");
+      };
+    </script>
+  </body>
+</html>
